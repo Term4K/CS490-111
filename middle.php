@@ -1,38 +1,44 @@
 <?php
-if(isset($_POST["page"])){
-    $url = '';
-    $post = array();
 
-    switch($_POST["page"]) {
-        case 0:
-            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/getGrade.php';
-            $post = array("example"=>0);
+if(isset($_POST['page'])){
+    $url = "";
+    switch($_POST['page']){
+        case "makeExam":
+            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/backend_exams.php';
             break;
-        case 1:
-            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/getGrade.php';
-            $post = array("example"=>0);
+        case "listExams":
+            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/backend_exams.php';
             break;
-        case 2:
-            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/getGrade.php';
-            $post = array("example"=>0);
+        case "examQuestions":
+            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/backend_exams.php';
             break;
-        case 3:
-            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/getGrade.php';
-            $post = array("example"=>0);
+        case "submitExam":
+            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/backend_exams.php';
             break;
-        case 4:
-            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/getGrade.php';
-            $post = array("example"=>0);
+        case "teacherScore":
+            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/backend_grades.php';
             break;
+        case "getTestCase":
+            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/backend_grades.php';
+            break;
+        case "updateGrade":
+            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/backend_grades.php';
+            break;
+        case "getStudentScore":
+            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/backend_grades.php';
+            break;
+        default:
+            $url = 'https://afsaccess4.njit.edu/~as3526/CS490/backend_beta.php';
     }
-
+    error_log("JSON of POST middle.php to url ".$url.": " . json_encode($_POST));
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
     curl_setopt($ch, CURLOPT_HEADER, false);
-
+    
     $response = curl_exec($ch);
-
+    error_log(json_encode($response));
+    
     if (curl_errno($ch)) {
         error_log('Couldn\'t send request: ' . curl_error($ch));
     } else {
@@ -40,7 +46,7 @@ if(isset($_POST["page"])){
         $resultStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($resultStatus == 200) {
             curl_close($ch);
-    
+        
             $data = json_decode($response, true);
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($data);

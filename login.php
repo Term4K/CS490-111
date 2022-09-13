@@ -21,7 +21,7 @@ if(isset($_POST["ucid"]) && isset($_POST["pass"])){
             curl_close($ch);
     
             $data = json_decode($response, true);
-            error_log("JSON Response from Backend: " . $data);
+            error_log("JSON Response from Backend: " . json_encode($data));
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($data);
         } else {
